@@ -67,6 +67,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         <a class="btn btn-info" href="user-detail.php?id=<?=$_GET["user_id"]?>">至會員詳細資訊</a>
         <?php endif ;?>
         <div class="py-2">
+            <?php if(!isset($_GET["user_id"])): ?>
             <form action="">
                 <div class="row g-2 align-items-center">
                     <div class="col-auto">
@@ -83,6 +84,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     </div>
                 </div>
             </form>
+            <?php endif ;?>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -100,7 +102,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                             <td><a class="text-black-50" href="order-list-detail.php?id=<?= $data["id"] ?>"><?= $data["id"] ?></a>
                             </td>
                             <td>
-                                <a class="text-black-50" href="order-list.php?date=<?= $data["order_date"] ?>"><?= $data["order_date"] ?></a>
+                                <a class="text-black-50" href=""><?= $data["order_date"] ?></a>
                             </td>
                             <td>
                                 <a href="order-list.php?user_id=<?= $data["user_id"] ?>"><?= $data["account"] ?></a>

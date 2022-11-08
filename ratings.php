@@ -72,7 +72,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <div class="container">
         <div class="py-2">
             <?php if(isset($_GET["user_id"])): ?>
+            <?php if(count($rows)!=0): ?>
             <h2 class="text-center">會員<?=$rows[0]["account"]?>的所有評價</h2>
+            <?php else: ?>
+            <h2 class="text-center">該會員尚未新增任何評價</h2>
+            <?php endif; ?>
             <?php endif; ?>
             <?php if(!isset($_GET["user_id"])): ?>
             <h2 class="text-center">Housetune商品評價列表</h2>
@@ -98,7 +102,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             <?php endif; ?>
         </div>
         <div class="d-flex justify-content-start my-2">
-            <h6 class="text-start d-flex align-items-center me-4">共 <?= $ratingCount ?> 則</h6>
+        <h6 class="text-start d-flex align-items-center me-4">共 <?= $ratingCount ?> 則</h6>
             <?php if(isset($_GET["user_id"])): ?>
             <a href="user-detail.php?id=<?=$id?>" class="btn btn-info">回會員詳細資訊</a>
             <?php endif; ?>
