@@ -26,7 +26,11 @@ else if(isset($_GET["status"]) && $_GET["status"]!==""){
 }
 else{
     $sql = "SELECT * FROM user";}
-    
+if(isset($_GET["page"])){
+    $page=$_GET["page"];
+}else{
+    $page=1;
+}
 
 $result = $conn->query($sql);
 $userCount = $result->num_rows;
