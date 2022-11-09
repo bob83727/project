@@ -23,7 +23,7 @@ else if(isset($_GET["startdate"]) && $_GET["startdate"]!==""){
     $sql1= "SELECT * FROM user WHERE created_at >= '$date1' AND created_at<= '$date2' ORDER BY created_at DESC LIMIT $page_start, $perPage";
     }else{
         $sql = "SELECT * FROM user WHERE created_at >= '$date1' ORDER BY created_at DESC ";
-        $sql1= "SELECT * FROM user WHERE created_at >= '$date1' ORDER BY created_at DESC $page_start, $perPage";
+        $sql1= "SELECT * FROM user WHERE created_at >= '$date1' ORDER BY created_at DESC LIMIT $page_start, $perPage";
     }
 }else if(isset($_GET["enddate"]) && $_GET["enddate"]!==""){
     $date2=$_GET["enddate"];

@@ -1,6 +1,14 @@
 <?php
 require_once("../housetunedbconnect.php");
-if(isset($_GET["user_id"])){
+if(isset($_GET["page"])){
+    $page=$_GET["page"];
+}else{
+    $page=1;
+}
+$perPage=5;
+$page_start=($page-1)*$perPage;
+
+if(isset($_GET["user_id"]) && $_GET["user_id"]!==""){
     $id=$_GET["user_id"];
     $sql= "SELECT rating.*, product.name, user.account FROM rating
     JOIN product ON rating.product_id = product.id
@@ -26,12 +34,12 @@ if(isset($_GET["user_id"])){
     JOIN product ON rating.product_id = product.id
     JOIN user ON rating.user_id = user.id
     WHERE rating.posted_at <= '$date2' ORDER BY rating.posted_at DESC ";
-}else if(isset($_GET["score"])){
+}else if(isset($_GET["score"])&& $_GET["score"]!==""){
     $score=$_GET["score"];
     $sql= "SELECT rating.*, product.name, user.account FROM rating
     JOIN product ON rating.product_id = product.id
     JOIN user ON rating.user_id = user.id
-    WHERE rating.stars='$score'";
+    WHERE rating.stars='$score' ORDER BY rating.posted_at DESC";
 }
 else{
     $sql= "SELECT rating.*, product.name, user.account FROM rating
@@ -39,11 +47,12 @@ JOIN product ON rating.product_id = product.id
 JOIN user ON rating.user_id = user.id";
 }
 
-
-
 $result = $conn->query($sql);
 $ratingCount=$result->num_rows;
-$rows = $result->fetch_all(MYSQLI_ASSOC);
+$sql1=" $sql LIMIT $page_start, $perPage";
+$result1 = $conn->query($sql1) ;
+$rows = $result1->fetch_all(MYSQLI_ASSOC);
+$totalPage=ceil($ratingCount/$perPage);
 
 ?>
 <!doctype html>
@@ -71,14 +80,14 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 <body>
     <div class="container">
         <div class="py-2">
-            <?php if(isset($_GET["user_id"])): ?>
+            <?php if(isset($_GET["user_id"]) && $_GET["user_id"]!==""): ?>
             <?php if(count($rows)!=0): ?>
             <h2 class="text-center">會員<?=$rows[0]["account"]?>的所有評價</h2>
             <?php else: ?>
             <h2 class="text-center">該會員尚未新增任何評價</h2>
             <?php endif; ?>
             <?php endif; ?>
-            <?php if(!isset($_GET["user_id"])): ?>
+            <?php if($_GET["user_id"]==""): ?>
             <h2 class="text-center">Housetune商品評價列表</h2>
             <form action="ratings.php" method="get">
                 <div class="input-group">
@@ -103,11 +112,13 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         </div>
         <div class="d-flex justify-content-start my-2">
         <h6 class="text-start d-flex align-items-center me-4">共 <?= $ratingCount ?> 則</h6>
-            <?php if(isset($_GET["user_id"])): ?>
+            <?php if(isset($_GET["user_id"]) && $_GET["user_id"]!==""): ?>
             <a href="user-detail.php?id=<?=$id?>" class="btn btn-info">回會員詳細資訊</a>
             <?php endif; ?>
-            <?php if(isset($_GET["startdate"]) || isset($_GET["enddate"]) || isset($_GET["score"])):?>
+            <?php if($_GET["startdate"]!=="" || $_GET["enddate"]!=="" || $_GET["score"]!==""):?>
+            <?php if(isset($_GET["startdate"])): ?>    
             <a href="ratings.php" class="btn btn-info">回評價列表</a>
+            <?php endif; ?>
             <?php endif; ?>
         </div>
         <table class="table table-bordered mt-3">
@@ -117,7 +128,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 <th>商品名</th>
                 <th>評分</th>
                 <th>發布時間</th>
-                <th><?php if(isset($_GET["user_id"])){echo "評論";} ?></th>
+                <th><?php if(isset($_GET["user_id"])&& $_GET["user_id"]!==""){echo "評論";} ?></th>
             </tr>
             <?php foreach($rows as $row): ?>
             <tr>
@@ -139,16 +150,24 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                 </td>
                 <td><?=$row["posted_at"]?></td>
                 <td>
-                    <?php if(!isset($_GET["user_id"])): ?>
+                    <?php if($_GET["user_id"]==""): ?>
                     <a href="rating-detail.php?id=<?=$row["id"]?>" class="btn btn-info">查看詳細評論</a>
                     <?php endif; ?>
-                    <?php if(isset($_GET["user_id"])): ?>
+                    <?php if(isset($_GET["user_id"]) && $_GET["user_id"]!==""): ?>
                     <?=$row["comment"]?>
                     <?php endif; ?>
                 </td>
             </tr>
             <?php endforeach; ?>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php for($i=1; $i<=$totalPage; $i++):?>
+                <li class="page-item <?php if($i==$page)echo "active";?>"><a class="page-link"
+                        href="ratings.php?page=<?=$i?>&user_id=<?php if(isset($id)) echo"$id";?>&startdate=<?php if(isset($date1)) echo"$date1";?>&enddate=<?php if(isset($date2)) echo"$date2";?>&score=<?php if(isset($score)) echo"$score";?>"><?=$i?></a></li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
     </div>
 </body>
 
