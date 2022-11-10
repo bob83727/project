@@ -76,7 +76,7 @@ $row = $result->fetch_assoc();
         <div class="d-flex justify-content-evenly">
             <a href="userlist.php" class="btn btn-info mt-2">回會員列表</a>
             <a href="ratings.php?user_id=<?= $row["id"]?>" class="btn btn-info mt-2">檢視用戶所有評價</a>
-            <a href="order-list.php?user_id=<?= $row["id"]?>" class="btn btn-info mt-2">檢視用戶歷史訂單</a>
+            <a href="order-list.php?user_id1=<?= $row["id"]?>&user_id=" class="btn btn-info mt-2">檢視用戶歷史訂單</a>
         </div>
     </div>
 </body>

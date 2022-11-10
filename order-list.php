@@ -13,7 +13,10 @@ $page_start=($page-1)*$perPage;
 
 $whereClause = "";
 
-
+if (isset($_GET["user_id1"]) && $_GET["user_id1"]!=="") {
+    $user_id1 = $_GET["user_id1"];
+    $whereClause = "WHERE order_list.user_id = '$user_id1'";
+}
 if (isset($_GET["user_id"]) && $_GET["user_id"]!=="") {
     $user_id = $_GET["user_id"];
     $whereClause = "WHERE order_list.user_id = '$user_id'";
@@ -63,7 +66,7 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <div class="container">
-<?php if(!isset($_GET["user_id"]) || $_GET["user_id"]==""): ?>
+<?php if(!isset($_GET["user_id"]) && !isset($_GET["user_id1"]) || $_GET["user_id1"]=="" && $_GET["user_id"]==""): ?>
 <h2 class="text-center p-2">Housetune訂單管理</h2>
 <?php elseif(count($rows)!=0): ?>
 <h2 class="text-center p-2"><?=$rows[0]["account"]?>的所有訂單</h2>
@@ -112,13 +115,13 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
             <tbody>
                 <?php foreach ($rows as $data) : ?>
                     <tr>
-                        <td><a class="text-black-50" href="order-list-detail.php?id=<?= $data["id"] ?>"><?= $data["id"] ?></a>
+                        <td><a class="text-black-50" href="order-list-detail.php?id=<?=$data["id"]?>"><?= $data["id"] ?></a>
                         </td>
                         <td>
                             <a class="text-black-50 text-decoration-none" href=""><?= $data["order_date"] ?></a>
                         </td>
                         <td>
-                            <a class="text-black-50" href="order-list.php?user_id=<?= $data["user_id"] ?>"><?= $data["account"] ?></a>
+                            <a class="text-black-50" href="order-list.php?user_id=<?= $data["user_id"] ?>&user_id1="><?= $data["account"] ?></a>
                         </td>
                         <td>
                             <a class="text-black-50 text-decoration-none" href=""><?php if($data["valid"]==1){
@@ -136,7 +139,7 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
             <ul class="pagination">
                 <?php for($i=1; $i<=$totalPage; $i++):?>
                 <li class="page-item <?php if($i==$page)echo "active";?>"><a class="page-link"
-                        href="order-list.php?page=<?=$i?>&startDate=<?php if(isset($start)) echo"$start";?>&endDate=<?php if(isset($end)) echo"$end"?>&user_id=<?php if(isset($user_id)) echo"$user_id"?>"><?=$i?></a></li>
+                        href="order-list.php?page=<?=$i?>&startDate=<?php if(isset($start)) echo"$start";?>&endDate=<?php if(isset($end)) echo"$end"?>&user_id=<?php if(isset($user_id)) echo"$user_id"?>&user_id1=<?php if(isset($user_id1)) echo"$user_id1"?>"><?=$i?></a></li>
                 <?php endfor; ?>
             </ul>
         </nav>
