@@ -45,10 +45,6 @@ $userCount=$result->num_rows;
             <td><input type="text" value="<?= $row["account"]?>" name="account"></td>
         </tr>
         <tr>
-            <th>密碼</th>
-            <td><input type="text" value="<?= $row["password"]?>" name="password"></td>
-        </tr>
-        <tr>
             <th>名稱</th>
             <td><input type="text" value="<?= $row["name"]?>" name="name"></td>
         </tr>

@@ -38,10 +38,6 @@ $row = $result->fetch_assoc();
                 <td><?= $row["account"]?></td>
             </tr>
             <tr>
-                <th>密碼</th>
-                <td><?= $row["password"]?></td>
-            </tr>
-            <tr>
                 <th>名稱</th>
                 <td><?= $row["name"]?></td>
             </tr>

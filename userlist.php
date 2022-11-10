@@ -147,7 +147,6 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
                 <tr>
                     <th>編號</th>
                     <th>帳號</th>
-                    <th>密碼</th>
                     <th>名稱</th>
                     <th>電話</th>
                     <th>狀態</th>
@@ -159,7 +158,6 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
                 <tr>
                     <td><?= $person["id"]?></td>
                     <td><?= $person["account"]?></td>
-                    <td><?= $person["password"]?></td>
                     <td><?= $person["name"]?></td>
                     <td><?= $person["phone"]?></td>
                     <td><?php if($person["valid"]==1){
