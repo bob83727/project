@@ -115,8 +115,13 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
             <tbody>
                 <?php foreach ($rows as $data) : ?>
                     <tr>
-                        <td><a class="text-black-50" href="order-list-detail.php?id=<?=$data["id"]?>"><?= $data["id"] ?></a>
+                        <?php if(isset($_GET["user_id1"]) && ($_GET["user_id1"])!==""): ?>
+                        <td><a class="text-black-50"><?= $data["id"] ?></a>
                         </td>
+                        <?php else: ?>
+                            <td><a class="text-black-50" href="order-list-detail.php?id=<?=$data["id"]?>"><?= $data["id"] ?></a>
+                        </td>
+                        <?php endif; ?>
                         <td>
                             <a class="text-black-50 text-decoration-none" href=""><?= $data["order_date"] ?></a>
                         </td>
