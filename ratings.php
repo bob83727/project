@@ -87,7 +87,7 @@ $totalPage=ceil($ratingCount/$perPage);
             <h2 class="text-center">該會員尚未新增任何評價</h2>
             <?php endif; ?>
             <?php endif; ?>
-            <?php if($_GET["user_id"]==""): ?>
+            <?php if(!isset($_GET["user_id"]) || $_GET["user_id"]==""): ?>
             <h2 class="text-center">Housetune商品評價列表</h2>
             <form action="ratings.php" method="get">
                 <div class="input-group">
@@ -115,8 +115,8 @@ $totalPage=ceil($ratingCount/$perPage);
             <?php if(isset($_GET["user_id"]) && $_GET["user_id"]!==""): ?>
             <a href="user-detail.php?id=<?=$id?>" class="btn btn-info">回會員詳細資訊</a>
             <?php endif; ?>
-            <?php if($_GET["startdate"]!=="" || $_GET["enddate"]!=="" || $_GET["score"]!==""):?>
-            <?php if(isset($_GET["startdate"])): ?>    
+            <?php if(isset($_GET["startdate"])):?>
+            <?php if($_GET["startdate"]!=="" || $_GET["enddate"]!=="" || $_GET["score"]!==""): ?>    
             <a href="ratings.php" class="btn btn-info">回評價列表</a>
             <?php endif; ?>
             <?php endif; ?>
@@ -150,7 +150,7 @@ $totalPage=ceil($ratingCount/$perPage);
                 </td>
                 <td><?=$row["posted_at"]?></td>
                 <td>
-                    <?php if($_GET["user_id"]==""): ?>
+                    <?php if(!isset($_GET["user_id"]) || $_GET["user_id"]==""): ?>
                     <a href="rating-detail.php?id=<?=$row["id"]?>" class="btn btn-info">查看詳細評論</a>
                     <?php endif; ?>
                     <?php if(isset($_GET["user_id"]) && $_GET["user_id"]!==""): ?>
