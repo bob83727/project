@@ -73,16 +73,16 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
 <?php else: ?>
 <h2 class="text-center p-2">該用戶尚未有任何訂單</h2>
 <?php endif; ?>
-    <?php if (isset($_GET["startDate"]) && $_GET["startDate"]!=="") : ?>
+    <?php if (isset($_GET["startDate"]) && $_GET["startDate"]!=="" || isset($_GET["user_id"]) && $_GET["user_id"]!=="") : ?>
         <div class="p-2">
             <a class="btn btn-info" href="order-list.php">至訂單列表</a>
         </div>
     <?php endif; ?>
-    <?php if (isset($_GET["user_id"]) && $_GET["user_id"]!=="") : ?>
-        <a class="btn btn-info" href="user-detail.php?id=<?= $_GET["user_id"] ?>">至會員詳細資訊</a>
+    <?php if (isset($_GET["user_id1"]) && $_GET["user_id1"]!=="") : ?>
+        <a class="btn btn-info" href="user-detail.php?id=<?= $_GET["user_id1"] ?>">至會員詳細資訊</a>
     <?php endif; ?>
     <div class="py-2">
-        <?php if (!isset($_GET["user_id"]) || $_GET["user_id"]=="") : ?>
+        <?php if (!isset($_GET["user_id1"]) || $_GET["user_id1"]=="" && $_GET["user_id"]=="" ) : ?>
             <form action="">
                 <div class="row g-2 align-items-center">
                     <div class="col-auto">
