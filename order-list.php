@@ -2,21 +2,20 @@
 
 require_once("../housetunedbconnect.php");
 
+if(isset($_GET["page"])){
+    $page=$_GET["page"];
+}else{
+    $page=1;
+}
+$perPage=5;
+$page_start=($page-1)*$perPage;
 
 $whereClause = "";
 
-if (isset($_GET["date"])) {
-    $date = $_GET["date"];
-    $whereClause = "WHERE order_list.order_date ='$date'";
-}
 
 if (isset($_GET["user_id"])) {
     $user_id = $_GET["user_id"];
     $whereClause = "WHERE order_list.user_id = '$user_id'";
-}
-if (isset($_GET["price"])) {
-    $price = $_GET["price"];
-    $whereClause = "WHERE order_list.price ='$price'";
 }
 if (isset($_GET["startDate"])) {
     $start = $_GET["startDate"];
@@ -29,13 +28,19 @@ JOIN user ON order_list.user_id = user.id
 $whereClause
 ORDER BY order_list.id DESC
 ";
-
-
+$sql1= "SELECT order_list.*, user.account FROM order_list
+JOIN user ON order_list.user_id = user.id
+$whereClause
+ORDER BY order_list.id DESC LIMIT $page_start, $perPage
+";
 
 
 $result = $conn->query($sql);
 $productCount = $result->num_rows;
-$rows = $result->fetch_all(MYSQLI_ASSOC);
+$totalPage=ceil($productCount/$perPage);
+$result1 = $conn->query($sql1);
+
+$rows = $result1->fetch_all(MYSQLI_ASSOC);
 
 
 
@@ -115,6 +120,14 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php for($i=1; $i<=$totalPage; $i++):?>
+                <li class="page-item <?php if($i==$page)echo "active";?>"><a class="page-link"
+                        href="order-list.php?page=<?=$i?>"><?=$i?></a></li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
         </div>
     </div>
 </body>
