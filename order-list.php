@@ -101,6 +101,7 @@ $rows = $result1->fetch_all(MYSQLI_ASSOC);
             </form>
         <?php endif; ?>
     </div>
+    <h6>共<?=$productCount?>筆</h6>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
